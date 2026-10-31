@@ -78,8 +78,11 @@ def sldc_day(d):
 
 
 def update_load(daily, today, log):
-    """Fetch every day after the last stored one up to yesterday. Returns the number of new days."""
-    new, d = 0, daily.index.max() + pd.Timedelta(days=1)
+    """Fetch every day after the last stored one up to yesterday, plus any of the last 3 days that
+    were stored only partly filled (fetched before SLDC finished publishing). Returns the number of days fetched."""
+    recent = daily.loc[daily.index > today - pd.Timedelta(days=4), "completeness"]
+    partial = recent[recent.fillna(0) < 0.95].index
+    new, d = 0, min([daily.index.max() + pd.Timedelta(days=1), *partial])
     while d < today:
         try:
             r = sldc_day(d)
