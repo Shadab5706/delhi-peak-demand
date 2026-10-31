@@ -311,7 +311,7 @@ def main():
                      "tmax_raw": None if pd.isna(raw_week.loc[t, "tmax"]) else round(float(raw_week.loc[t, "tmax"]), 1),
                      "holiday": bool(holiday_flags(pd.DatetimeIndex([t]))[0]), "alert": bool(f[i] > thr)})
 
-    stale = (today - origin).days > 2
+    stale = (today - origin).days > 1  # yesterday should be published by 07:00 IST
     hist = daily.loc[origin - pd.Timedelta(days=27):origin]
     latest = {
         "issued_at": now.strftime("%Y-%m-%d %H:%M IST"), "origin": origin.strftime("%Y-%m-%d"),

@@ -32,7 +32,9 @@ jobs:
       - name: Check that Delhi SLDC is reachable
         continue-on-error: true
         run: |
-          python -c "import sys, datetime; sys.path.insert(0, 'pipeline'); import live; d = datetime.date.today() - datetime.timedelta(days=2); print('SLDC check', d, live.sldc_day(d))"
+          for u in "https://www.delhisldc.org/Loaddata.aspx?mode=29/10/2026" "http://www.delhisldc.org/" "https://grid-india.in/"; do
+            curl -sS -m 60 -o /dev/null -w "$u -> http %{http_code}, connect %{time_connect}s, total %{time_total}s\n" "$u" || echo "$u -> unreachable"
+          done
       - name: Run the live forecast
         run: python pipeline/live.py
       - name: Commit the new forecast
