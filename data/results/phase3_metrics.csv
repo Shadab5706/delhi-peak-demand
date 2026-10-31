@@ -1,0 +1,25 @@
+model,family,weather,RMSE,MAE,MAPE,MAPE_summer,MAPE_heatwave,bias_heatwave_MW,MAPE_val_2025
+Naive (yesterday),baseline,observed,769.84,555.57,9.69,10.52,7.09,-435.61,6.97
+Naive (yesterday),baseline,forecast,769.84,555.57,9.69,10.52,7.09,-435.61,6.97
+Seasonal naive (last week),baseline,observed,871.67,675.31,11.42,13.78,14.79,-1042.47,8.95
+Seasonal naive (last week),baseline,forecast,871.67,675.31,11.42,13.78,14.79,-1042.47,8.95
+Seasonal naive (last year),baseline,observed,809.81,604.75,9.97,9.74,10.28,-668.82,9.45
+Seasonal naive (last year),baseline,forecast,809.81,604.75,9.97,9.74,10.28,-668.82,9.45
+Holt-Winters (weekly),classical,observed,759.9,542.98,9.33,10.76,8.33,-572.73,6.79
+Holt-Winters (weekly),classical,forecast,759.9,542.98,9.33,10.76,8.33,-572.73,6.79
+SARIMA,classical,observed,754.18,538.71,9.25,10.67,7.94,-546.68,6.88
+SARIMA,classical,forecast,754.18,538.71,9.25,10.67,7.94,-546.68,6.88
+SARIMAX + calendar,classical,observed,735.91,510.28,8.66,10.56,6.68,-428.69,6.71
+SARIMAX + calendar,classical,forecast,735.91,510.28,8.66,10.56,6.68,-428.69,6.71
+SARIMAX + calendar + weather,classical,observed,391.11,290.94,5.19,5.71,3.97,-173.68,5.12
+SARIMAX + calendar + weather,classical,forecast,518.93,380.56,6.52,6.87,3.24,-177.22,6.54
+Prophet + holidays + weather,additive regression,observed,353.45,279.85,5.03,5.38,5.08,-107.02,5.22
+Prophet + holidays + weather,additive regression,forecast,527.92,409.03,7.09,6.05,4.4,-120.77,6.72
+XGBoost (direct),ML/DL,observed,312.31,243.47,4.23,4.71,4.48,-37.54,4.8
+XGBoost (direct),ML/DL,forecast,463.57,342.4,5.68,6.34,4.28,-148.54,5.75
+LSTM (direct 7-day),ML/DL,observed,306.94,233.66,3.96,3.73,3.76,11.67,4.14
+LSTM (direct 7-day),ML/DL,forecast,531.45,382.45,6.31,5.04,3.86,117.72,5.58
+GRU (direct 7-day),ML/DL,observed,296.55,223.1,3.81,3.29,3.26,-12.47,4.16
+GRU (direct 7-day),ML/DL,forecast,531.88,387.15,6.4,5.12,4.35,105.85,5.68
+Ensemble (LSTM + GRU),ensemble,observed,296.27,223.85,3.81,3.43,3.45,-0.4,4.03
+Ensemble (LSTM + GRU),ensemble,forecast,528.08,381.47,6.29,5.02,4.02,111.78,5.53

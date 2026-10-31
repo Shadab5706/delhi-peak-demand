@@ -1,0 +1,42 @@
+{
+ "columns": [
+  "l0",
+  "l1",
+  "l6",
+  "m30",
+  "s7",
+  "trend7",
+  "lw",
+  "ly",
+  "x_tmax",
+  "x_tmean",
+  "x_humidity",
+  "x_cdd",
+  "x_cdd_lag1",
+  "x_hdd",
+  "x_humid_cdd",
+  "x_sin1",
+  "x_cos1",
+  "x_sin2",
+  "x_cos2",
+  "x_is_holiday",
+  "x_is_weekend",
+  "x_dow_sin",
+  "x_dow_cos",
+  "dcdd",
+  "dtmax"
+ ],
+ "params": {
+  "max_depth": 5,
+  "learning_rate": 0.03,
+  "n_estimators": 600,
+  "min_child_weight": 3
+ },
+ "fit_end": "2025-12-31",
+ "target": "log(peak[o+h] / mean7[o])",
+ "cdd_base": 24.0,
+ "hdd_base": 15.0,
+ "bias_window_days": 30,
+ "alert_quantile": 0.95,
+ "alert_lookback_days": 730
+}

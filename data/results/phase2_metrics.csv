@@ -1,0 +1,8 @@
+model,RMSE,MAE,MAPE,MAPE_summer,MAPE_val_2025
+Naive (yesterday),769.84,555.57,9.69,10.52,6.97
+Seasonal naive (last week),871.67,675.31,11.42,13.78,8.95
+Seasonal naive (last year),809.81,604.75,9.97,9.74,9.45
+Holt-Winters (weekly),759.9,542.98,9.33,10.76,6.79
+SARIMA,754.18,538.71,9.25,10.67,6.88
+SARIMAX + calendar,735.91,510.28,8.66,10.56,6.71
+SARIMAX + calendar + weather,391.11,290.94,5.19,5.71,5.12

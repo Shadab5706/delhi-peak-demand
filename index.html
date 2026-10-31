@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Delhi Peak Demand Forecasting</title>
-<meta name="description" content="Forecasting Delhi's daily peak electricity demand 1 to 7 days ahead from 5-minute grid data and weather. CSET369 Time Series Analysis project, Bennett University.">
+<title>Delhi Peak Demand</title>
+<meta name="description" content="Live 7-day forecast of Delhi's daily peak electricity demand, a power purchase planner and a heatwave what-if tool, with a full model comparison. CSET369 Time Series Analysis project, Bennett University.">
 <meta name="author" content="Md Shadab Iqbal Khan">
-<meta property="og:title" content="Forecasting Delhi's Daily Peak Electricity Demand">
-<meta property="og:description" content="12 models, 2,123 days of grid data, a rolling-origin backtest on 2026 and an interactive forecast explorer.">
+<meta property="og:title" content="Delhi Peak Demand: live forecast and planner">
+<meta property="og:description" content="A daily-updated 7-day forecast of Delhi's peak electricity demand, with a power purchase planner, heatwave what-if and model comparison.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://shadab5706.github.io/delhi-peak-demand/img/p1_line_plot.jpg">
-<meta name="theme-color" content="#22262E">
+<meta property="og:image" content="https://shadab5706.github.io/delhi-peak-demand/img/p3_dashboard.jpg">
+<meta name="theme-color" content="#1a1d23">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2322262E'/%3E%3Cpath d='M18 4 8 18h7l-2 10 11-15h-7z' fill='%23E8871E'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,375 +21,67 @@
 </script>
 </head>
 <body>
-
-<header class="nav" id="top">
-  <div class="wrap nav-in">
-    <a class="brand" href="#top" aria-label="Back to top">
-      <svg viewBox="0 0 32 32" width="26" height="26" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#2b303a"/><path d="M18 4 8 18h7l-2 10 11-15h-7z" fill="#E8871E"/></svg>
-      <span>Delhi Peak Demand</span>
+<div class="app">
+  <aside class="side" id="side">
+    <a class="brand" href="#/">
+      <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#2b303a"/><path d="M18 4 8 18h7l-2 10 11-15h-7z" fill="#E8871E"/></svg>
+      <span><b>Delhi Peak Demand</b><small>Forecast &amp; planning</small></span>
     </a>
-    <nav class="links" id="links">
-      <a href="#problem">Problem</a>
-      <a href="#data">Data</a>
-      <a href="#eda">EDA</a>
-      <a href="#method">Method</a>
-      <a href="#results">Results</a>
-      <a href="#explorer">Explorer</a>
-      <a href="#about">About</a>
+    <div class="live-pill" id="livePill"><i></i><span>Loading…</span></div>
+    <nav class="menu" id="menu">
+      <p class="grp">Live</p>
+      <a href="#/" data-r="">
+        <svg viewBox="0 0 24 24"><path d="M4 11.5 12 5l8 6.5V20h-5.5v-5h-5v5H4z"/></svg>Overview</a>
+      <a href="#/live" data-r="live">
+        <svg viewBox="0 0 24 24"><path d="M3 17l5-6 4 4 5-7 4 5"/><path d="M3 21h18"/></svg>Next 7 days</a>
+      <a href="#/track" data-r="track">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></svg>Track record</a>
+      <p class="grp">Decide</p>
+      <a href="#/planner" data-r="planner">
+        <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 15v-3M12 15V9M16 15v-5"/></svg>Power planner</a>
+      <a href="#/whatif" data-r="whatif">
+        <svg viewBox="0 0 24 24"><path d="M12 3v11.5"/><path d="M8.5 17.5a3.5 3.5 0 1 0 7 0c0-1.3-.7-2.4-1.7-3V5a1.8 1.8 0 0 0-3.6 0v9.5c-1 .6-1.7 1.7-1.7 3z"/></svg>Heatwave what-if</a>
+      <p class="grp">Analyse</p>
+      <a href="#/forecast" data-r="forecast">
+        <svg viewBox="0 0 24 24"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M7 15l3-4 3 2 4-6"/></svg>Forecast explorer</a>
+      <a href="#/models" data-r="models">
+        <svg viewBox="0 0 24 24"><path d="M5 20V10M12 20V4M19 20v-7"/></svg>Models</a>
+      <a href="#/data" data-r="data">
+        <svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></svg>Data explorer</a>
+      <p class="grp">Project</p>
+      <a href="#/method" data-r="method">
+        <svg viewBox="0 0 24 24"><path d="M6 4h9l4 4v12H6z"/><path d="M9 12h7M9 16h7"/></svg>Methodology</a>
+      <a href="#/about" data-r="about">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>About</a>
     </nav>
-    <div class="nav-actions">
-      <button class="icon-btn" id="themeBtn" aria-label="Switch light or dark theme" title="Switch theme">
-        <svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        <svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+    <div class="side-foot">
+      <button class="theme-btn" id="themeBtn" aria-label="Switch light or dark theme">
+        <svg class="i-sun" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
+        <span class="t-light">Light mode</span><span class="t-dark">Dark mode</span>
       </button>
-      <button class="icon-btn menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="links">
-        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      </button>
+      <p>CSET369 · Bennett University</p>
     </div>
-  </div>
-</header>
+  </aside>
 
-<section class="hero">
-  <svg class="hero-spark" id="heroSpark" preserveAspectRatio="none" aria-hidden="true"></svg>
-  <div class="wrap hero-in">
-    <p class="eyebrow">CSET369 Time Series Analysis · Bennett University</p>
-    <h1>Forecasting Delhi's daily <span class="hl">peak electricity demand</span></h1>
-    <p class="lede">How much power will Delhi need at its busiest moment, one to seven days from now? This project answers that with 5-minute grid data, weather forecasts and twelve forecasting models, all tested on 2026 data they had never seen.</p>
-    <div class="stats">
-      <div class="stat"><b>5.68%</b><span>best error (MAPE), XGBoost with real weather forecasts</span></div>
-      <div class="stat"><b>6.29%</b><span>deployed LSTM + GRU ensemble, chosen before testing</span></div>
-      <div class="stat"><b>8,705 MW</b><span>record peak, 29 June 2026 at 15:15</span></div>
-      <div class="stat"><b>2,123</b><span>days of grid data, 2021 to Oct 2026</span></div>
-    </div>
-    <div class="cta">
-      <a class="btn primary" href="#explorer">Try the forecast explorer</a>
-      <a class="btn ghost" href="#results">See all results</a>
-    </div>
-  </div>
-</section>
+  <header class="topbar">
+    <button class="icon-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="side">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <a class="brand sm" href="#/">
+      <svg viewBox="0 0 32 32" width="24" height="24" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#2b303a"/><path d="M18 4 8 18h7l-2 10 11-15h-7z" fill="#E8871E"/></svg>
+      <b>Delhi Peak Demand</b>
+    </a>
+    <div class="live-pill sm" id="livePillSm"><i></i><span></span></div>
+  </header>
+  <div class="scrim" id="scrim"></div>
 
-<main>
-
-<section id="problem" class="sec">
-  <div class="wrap">
-    <p class="kicker">01 · The problem</p>
-    <h2>Delhi's grid has to be ready for its hottest afternoon</h2>
-    <div class="cols">
-      <div class="prose">
-        <p>Delhi's power demand peaks on summer afternoons, when air conditioners run across the city. The peak has grown from 7,292 MW in 2021 to 8,705 MW in 2026. Power companies buy most of that power in advance, so they need to know the peak a few days ahead.</p>
-        <p>If the forecast is too low, the grid has to buy expensive last-minute power or cut supply. If it is too high, money is wasted on power nobody uses.</p>
-        <p><strong>Goal:</strong> forecast the daily peak demand (MW) for each of the next 7 days, give a range around it, and raise an alert before unusual heat-driven spikes.</p>
-      </div>
-      <ul class="qa">
-        <li><span>Target</span>Daily peak demand of all of Delhi, in MW</li>
-        <li><span>Horizon</span>1 to 7 days ahead, a new forecast every week</li>
-        <li><span>Score</span>MAPE: the average error as a percent of the real peak</li>
-        <li><span>Extra</span>90% range and a heat-spike alert</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<section id="data" class="sec alt">
-  <div class="wrap">
-    <p class="kicker">02 · The data</p>
-    <h2>Real grid readings every 5 minutes, joined with weather</h2>
-    <div class="cards two">
-      <article class="card src">
-        <div class="tag amber">Load</div>
-        <h3>Delhi State Load Despatch Centre (SLDC)</h3>
-        <p>The grid operator publishes the load of Delhi and each power company (BRPL, BYPL, TPDDL, NDMC, MES) every 5 minutes. A downloader collected one page per day and turned it into a daily table.</p>
-        <p class="src-link">delhisldc.org · public government data</p>
-      </article>
-      <article class="card src">
-        <div class="tag blue">Weather</div>
-        <h3>Open-Meteo weather APIs</h3>
-        <p>Daily temperature, humidity and rain for New Delhi from the ERA5 archive, plus archived GFS weather <em>forecasts</em> made 1 to 7 days before each day, so the models can be tested the way they would really be used.</p>
-        <p class="src-link">open-meteo.com · CC BY 4.0</p>
-      </article>
-    </div>
-    <div class="numbers">
-      <div><b>585,739</b><span>5-minute readings</span></div>
-      <div><b>2,123</b><span>days, 1 Jan 2021 to 24 Oct 2026</span></div>
-      <div><b>28</b><span>days missing on the server</span></div>
-      <div><b>108</b><span>incomplete days filled in, never scored</span></div>
-    </div>
-    <p class="note">Cleaning: a reading more than 800 MW away from its 25-minute rolling median is a spike, and a reading below 500 MW is a dropout. Days with less than 80% of their 288 readings are filled in for training but never used to score a model.</p>
-  </div>
-</section>
-
-<section id="eda" class="sec">
-  <div class="wrap">
-    <p class="kicker">03 · What the data shows</p>
-    <h2>Heat drives the peak, and the peak keeps growing</h2>
-    <figure class="fig wide">
-      <img src="img/p1_line_plot.jpg" alt="Line chart of Delhi's daily peak demand from 2021 to 2026, with summer peaks rising each year" loading="lazy" width="1400" height="535">
-      <figcaption>Daily peak demand, 2021–2026. Every summer goes higher; winters stay near 4,000–5,500 MW.</figcaption>
-    </figure>
-    <div class="facts" id="edaFacts"></div>
-    <div class="grid2">
-      <figure class="fig"><img src="img/p1_month_box.jpg" alt="Box plot of peak demand by month, highest in June and July" loading="lazy" width="1400" height="851"><figcaption>Peaks by month: June and July are highest, March and November lowest.</figcaption></figure>
-      <figure class="fig"><img src="img/p1_temperature_scatter.jpg" alt="Scatter plot of daily peak against maximum temperature" loading="lazy" width="1400" height="925"><figcaption>Peak vs. maximum temperature: demand climbs quickly once days pass about 30 °C.</figcaption></figure>
-      <figure class="fig"><img src="img/p1_stl_decomposition.jpg" alt="STL decomposition into trend, seasonal and remainder parts" loading="lazy" width="1400" height="868"><figcaption>STL split: a strong yearly season (strength 0.80) on top of a rising trend.</figcaption></figure>
-      <figure class="fig"><img src="img/p1_weekday.jpg" alt="Bar chart of weekday effect on peak demand" loading="lazy" width="1400" height="955"><figcaption>Weekly rhythm: Sundays run about 3.8% below average, Fridays 2.2% above.</figcaption></figure>
-    </div>
-    <div class="card chart-card">
-      <div class="chart-head"><h3>Yearly record peak</h3><span class="muted">MW, highest day of each year</span></div>
-      <div id="yearChart" class="chart short"></div>
-    </div>
-  </div>
-</section>
-
-<section id="method" class="sec alt">
-  <div class="wrap">
-    <p class="kicker">04 · Method</p>
-    <h2>From a stationarity test to deep learning, all tested the same fair way</h2>
-    <ol class="steps">
-      <li>
-        <div class="step-n">1</div>
-        <div><h3>Stationarity</h3><p>ADF and KPSS tests show the raw series is not stationary. After one ordinary and one weekly difference it is (ADF p &lt; 0.001, KPSS p = 0.10), so the classical models use d = 1, D = 1 and a 7-day season.</p></div>
-      </li>
-      <li>
-        <div class="step-n">2</div>
-        <div><h3>Baselines and classical models</h3><p>Naive (yesterday), seasonal naive (last week, last year), Holt-Winters, SARIMA and SARIMAX with yearly Fourier terms, holidays and degree-days. SARIMA orders were picked by AIC from 36 options, rejecting fits with unit roots (the lowest-AIC fit was one of them).</p></div>
-      </li>
-      <li>
-        <div class="step-n">3</div>
-        <div><h3>Prophet</h3><p>Additive regression with yearly and weekly seasonality, Indian holidays and temperature regressors, refitted at every forecast date.</p></div>
-      </li>
-      <li>
-        <div class="step-n">4</div>
-        <div><h3>XGBoost</h3><p>Seven separate tree models, one for each day ahead. Each predicts the ratio to last week's average, so it can forecast above any past record.</p></div>
-      </li>
-      <li>
-        <div class="step-n">5</div>
-        <div><h3>LSTM and GRU</h3><p>Recurrent networks read the last 28 days and the 7 forecast days' weather and calendar, then output all 7 days at once. Three seeds each; the deployed model averages LSTM and GRU.</p></div>
-      </li>
-      <li>
-        <div class="step-n">6</div>
-        <div><h3>Rolling-origin backtest</h3><p>Time order is never broken. Tune on 2021–2024, validate on 2025, then test once on 2026: forecast 7 days, move ahead 7 days, repeat. That is 41 forecasts and 278 scored days.</p></div>
-      </li>
-    </ol>
-    <div class="callout">
-      <div class="callout-ico" aria-hidden="true">
-        <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 3v11.5M8.5 17.5a3.5 3.5 0 1 0 7 0c0-1.3-.7-2.4-1.7-3V5a1.8 1.8 0 0 0-3.6 0v9.5c-1 .6-1.7 1.7-1.7 3z" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
-      </div>
-      <div>
-        <h3>Realistic weather vs. observed weather</h3>
-        <p>Most studies feed models the weather that actually happened, which nobody knows in advance. Here every model is scored twice: once with the <strong>observed</strong> weather (a perfect forecast) and once with the archived <strong>GFS forecast</strong> that was available on the day the forecast was made. Raw GFS runs about 4 °C too warm over Delhi, so each forecast is corrected by its average error over the previous 30 days, using only errors known at that time.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="results" class="sec">
-  <div class="wrap">
-    <p class="kicker">05 · Results</p>
-    <h2>Twelve models, scored on 2026</h2>
-    <p class="sub">Lower is better. Switch between the realistic setting (weather forecasts) and the ideal one (the weather that happened).</p>
-    <div class="card chart-card">
-      <div class="chart-head">
-        <h3>Test error (MAPE, %)</h3>
-        <div class="seg" role="group" aria-label="Weather used">
-          <button class="on" data-w="forecast" aria-pressed="true">Forecast weather</button>
-          <button data-w="observed" aria-pressed="false">Observed weather</button>
-        </div>
-      </div>
-      <div id="barChart" class="chart"></div>
-      <p class="legend-note"><i class="sw amber"></i>best in this setting <i class="sw blue"></i>deployed model <i class="sw grey"></i>no weather input <i class="sw soft"></i>other weather models</p>
-    </div>
-
-    <div class="takeaways">
-      <div class="take"><b>Weather is the big win.</b> Adding weather cuts the error from about 9% to 5–6.5%. Even a 7-day-old weather forecast beats having none.</div>
-      <div class="take"><b>Real forecasts cost 1.3–2.6 points.</b> With perfect weather the GRU wins (3.81%); with real forecasts XGBoost does (5.68%).</div>
-      <div class="take"><b>Honest model choice.</b> The LSTM + GRU ensemble was picked on 2025 before testing. We report its 6.29% instead of switching to XGBoost after seeing 2026.</div>
-    </div>
-
-    <div class="table-wrap card">
-      <table class="tbl" id="metricsTable">
-        <thead><tr><th>Model</th><th>Type</th><th class="n">MAPE<br><small>forecast wx</small></th><th class="n">MAPE<br><small>observed wx</small></th><th class="n">RMSE<br><small>MW</small></th><th class="n">MAE<br><small>MW</small></th><th class="n">Summer<br><small>MAPE</small></th><th class="n">Val 2025<br><small>MAPE</small></th></tr></thead>
-        <tbody></tbody>
-      </table>
-    </div>
-    <p class="note">RMSE, MAE and summer MAPE are for the realistic (forecast weather) setting. Summer = April–June 2026.</p>
-
-    <div class="grid2">
-      <div class="card chart-card">
-        <div class="chart-head"><h3>Error by days ahead</h3><span class="muted">MAPE %, forecast weather</span></div>
-        <div id="hzChart" class="chart short"></div>
-        <div class="legend" id="hzLegend"></div>
-        <p class="note small">SARIMAX is best one day ahead (2.7%); XGBoost holds up best 5–7 days out.</p>
-      </div>
-      <div class="card chart-card">
-        <div class="chart-head"><h3>What XGBoost relies on</h3><span class="muted">share of total gain</span></div>
-        <div id="fiChart" class="chart short"></div>
-        <p class="note small">How much hotter the target day is than today, and the forecast high temperature, matter most.</p>
-      </div>
-    </div>
-
-    <div class="grid2">
-      <figure class="fig"><img src="img/p3_peak_week_forecast.jpg" alt="Forecasts for the record week ending 29 June 2026" loading="lazy" width="1400" height="696"><figcaption>Record week: the 8,705 MW day was forecast at 7,801 MW, about 10% low. Models are careful beyond past extremes.</figcaption></figure>
-      <figure class="fig"><img src="img/p3_weather_skill.jpg" alt="Temperature forecast error by lead time, raw GFS vs bias-corrected" loading="lazy" width="1400" height="909"><figcaption>Weather forecast error by lead time, before and after the 30-day bias correction.</figcaption></figure>
-    </div>
-
-    <div class="numbers alert-nums">
-      <div><b>84.5%</b><span>of 2026 days fell inside the 90% range (avg. width 1,351 MW)</span></div>
-      <div><b>38</b><span>heat-spike days in 2026</span></div>
-      <div><b>22 / 8</b><span>caught / false alarms, XGBoost</span></div>
-      <div><b>19 / 13</b><span>caught / false alarms, deployed ensemble</span></div>
-    </div>
-  </div>
-</section>
-
-<section id="explorer" class="sec explorer-sec">
-  <div class="wrap">
-    <p class="kicker">06 · Forecast explorer</p>
-    <h2>Go back to any week of 2026 and see what each model said</h2>
-    <p class="sub">Every line is a real forecast from the backtest, made with only the data available on that day. Pick a forecast date and the models to compare.</p>
-
-    <div class="card explorer">
-      <div class="ex-controls">
-        <div class="ctl">
-          <label for="originSel">Forecast made on</label>
-          <div class="origin-row">
-            <button class="icon-btn sq" id="prevO" aria-label="Previous week">‹</button>
-            <select id="originSel"></select>
-            <button class="icon-btn sq" id="nextO" aria-label="Next week">›</button>
-          </div>
-        </div>
-        <div class="ctl">
-          <span class="lbl">Jump to</span>
-          <div class="jumps" id="jumps">
-            <button data-o="2026-05-20">Heat alert week</button><button data-o="2026-06-24">Record week</button><button data-o="2026-08-05">Monsoon</button><button data-o="2026-01-07">Winter</button>
-          </div>
-        </div>
-        <div class="ctl">
-          <span class="lbl">Weather used</span>
-          <div class="seg" role="group" aria-label="Weather used in explorer" id="exWx">
-            <button class="on" data-w="f" aria-pressed="true">Forecast</button>
-            <button data-w="o" aria-pressed="false">Observed</button>
-          </div>
-        </div>
-        <div class="ctl grow">
-          <span class="lbl">Models</span>
-          <div class="chips" id="chips"></div>
-        </div>
-      </div>
-
-      <div class="alert-box" id="alertBox" role="status"></div>
-      <div id="exChart" class="chart tall"></div>
-      <div class="ex-legend" id="exLegend"></div>
-      <div class="table-wrap">
-        <table class="tbl ex-tbl" id="exTable"></table>
-      </div>
-      <p class="note small">Alert rule: a day is flagged when the forecast is above the 95th percentile of peaks in the same season over the previous two years (the red dashed line). The shaded band is the deployed model's 90% range, built from its 2025 errors.</p>
-    </div>
-  </div>
-</section>
-
-<section id="dashboard" class="sec alt">
-  <div class="wrap">
-    <p class="kicker">07 · Dashboard</p>
-    <h2>A working dashboard for the grid operator</h2>
-    <div class="cols dash">
-      <figure class="fig shot"><img src="img/p3_dashboard.jpg" alt="Screenshot of the Streamlit dashboard showing a 7-day forecast, 90% range and heat-spike alert" loading="lazy" width="1400" height="1101"></figure>
-      <div class="prose">
-        <p>The project includes a Streamlit dashboard that runs on a laptop. Pick a date and it shows the deployed model's 7-day forecast, the 90% range, the forecast high temperature and a red alert banner when a spike is expected.</p>
-        <p>The screenshot is the week from 20 May 2026, when the alert fired correctly on four days.</p>
-        <p class="muted small">The explorer above is a lighter, static version of it that runs in any browser.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="limits" class="sec">
-  <div class="wrap">
-    <p class="kicker">08 · Limitations and future scope</p>
-    <h2>What these numbers don't cover, and what comes next</h2>
-    <div class="grid2 lf">
-      <div>
-        <h3 class="col-h red">Limitations</h3>
-        <ul class="list">
-          <li><b>Weather stand-in.</b> ERA5 reanalysis stands in for the weather-station readings an operator would use.</li>
-          <li><b>One weather model.</b> Only GFS forecasts are archived back to 2021, and humidity forecasts start in mid-2024.</li>
-          <li><b>One validation year.</b> The ranking of the top four models changed between 2025 and 2026.</li>
-          <li><b>Record days.</b> The 2026 record day was forecast about 10% too low.</li>
-          <li><b>Range coverage.</b> The 90% range covered 84.5% of days; 2026 was harder than 2025.</li>
-          <li><b>Scope.</b> Daily peak for all of Delhi only; no hourly curve or split by power company.</li>
-        </ul>
-      </div>
-      <div>
-        <h3 class="col-h amber">Future scope</h3>
-        <ul class="list">
-          <li><b>Live mode.</b> Pull today's weather forecast so the dashboard predicts the real coming week.</li>
-          <li><b>Better weather input.</b> Blend GFS with ECMWF and use the spread of an ensemble forecast as uncertainty.</li>
-          <li><b>Adaptive ranges.</b> Recalibrate the range on a rolling window (conformal prediction) to keep 90% coverage.</li>
-          <li><b>Finer targets.</b> Hourly load curve and forecasts for each power company.</li>
-          <li><b>Steadier model choice.</b> Validate over 2023–2025 and weight an ensemble by recent skill.</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="tools" class="sec alt">
-  <div class="wrap">
-    <p class="kicker">09 · Tools</p>
-    <h2>Built with open-source tools</h2>
-    <div class="tools">
-      <span>Python 3.13</span><span>pandas</span><span>NumPy</span><span>statsmodels</span><span>Prophet</span><span>XGBoost</span><span>PyTorch</span><span>scikit-learn</span><span>Matplotlib</span><span>Streamlit</span><span>Jupyter</span><span>pytest</span><span>Open-Meteo API</span><span>Git &amp; GitHub Pages</span>
-    </div>
-    <p class="note">The whole pipeline (download, clean, EDA, models, figures) runs from one command-line tool, and every number on this page comes from it.</p>
-  </div>
-</section>
-
-<section id="refs" class="sec">
-  <div class="wrap">
-    <p class="kicker">10 · References</p>
-    <h2>References</h2>
-    <ol class="refs">
-      <li>Hyndman, R. J., &amp; Athanasopoulos, G. (2021). <em>Forecasting: Principles and Practice</em> (3rd ed.). OTexts.</li>
-      <li>Box, G. E. P., Jenkins, G. M., Reinsel, G. C., &amp; Ljung, G. M. (2015). <em>Time Series Analysis: Forecasting and Control</em> (5th ed.). Wiley.</li>
-      <li>Hong, T., &amp; Fan, S. (2016). Probabilistic electric load forecasting: A tutorial review. <em>International Journal of Forecasting</em>, 32(3), 914–938.</li>
-      <li>Taylor, S. J., &amp; Letham, B. (2018). Forecasting at scale. <em>The American Statistician</em>, 72(1), 37–45.</li>
-      <li>Chen, T., &amp; Guestrin, C. (2016). XGBoost: A scalable tree boosting system. <em>Proc. 22nd ACM SIGKDD</em>, 785–794.</li>
-      <li>Hochreiter, S., &amp; Schmidhuber, J. (1997). Long short-term memory. <em>Neural Computation</em>, 9(8), 1735–1780.</li>
-      <li>Cho, K., et al. (2014). Learning phrase representations using RNN encoder–decoder for statistical machine translation. <em>Proc. EMNLP</em>, 1724–1734.</li>
-      <li>Ben Taieb, S., Bontempi, G., Atiya, A. F., &amp; Sorjamaa, A. (2012). A review and comparison of strategies for multi-step ahead time series forecasting. <em>Expert Systems with Applications</em>, 39(8), 7067–7083.</li>
-      <li>Kong, W., et al. (2019). Short-term residential load forecasting based on LSTM recurrent neural network. <em>IEEE Transactions on Smart Grid</em>, 10(1), 841–851.</li>
-      <li>Makridakis, S., Spiliotis, E., &amp; Assimakopoulos, V. (2018). Statistical and machine learning forecasting methods: Concerns and ways forward. <em>PLoS ONE</em>, 13(3), e0194889.</li>
-      <li>Vovk, V., Gammerman, A., &amp; Shafer, G. (2005). <em>Algorithmic Learning in a Random World</em>. Springer.</li>
-      <li>Hersbach, H., et al. (2020). The ERA5 global reanalysis. <em>Quarterly Journal of the Royal Meteorological Society</em>, 146(730), 1999–2049.</li>
-      <li>Data: State Load Despatch Centre, Delhi, <a href="https://www.delhisldc.org/" rel="noopener">delhisldc.org</a>; Open-Meteo Historical Weather and Historical Forecast APIs, <a href="https://open-meteo.com/" rel="noopener">open-meteo.com</a> (CC BY 4.0).</li>
-    </ol>
-  </div>
-</section>
-
-<section id="about" class="sec author-sec">
-  <div class="wrap">
-    <div class="author card">
-      <div class="avatar" aria-hidden="true">SK</div>
-      <div>
-        <p class="kicker">Author</p>
-        <h2>Md Shadab Iqbal Khan</h2>
-        <p>B.Tech Computer Science and Engineering, Bennett University</p>
-        <p class="muted">Solo project for CSET369 Time Series Analysis, 2026. Data collection, cleaning, modelling, dashboard and this website by the author.</p>
-        <a class="btn ghost sm" href="https://github.com/Shadab5706" rel="noopener">GitHub · Shadab5706</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-</main>
-
-<footer class="foot">
-  <div class="wrap foot-in">
-    <span>© 2026 Md Shadab Iqbal Khan · Forecasting Delhi's Daily Peak Electricity Demand</span>
-    <span>Load data: Delhi SLDC · Weather: Open-Meteo (CC BY 4.0)</span>
-  </div>
-</footer>
-
+  <main class="view" id="view" tabindex="-1">
+    <div class="loading">Loading data…</div>
+  </main>
+</div>
 <div class="tip" id="tip" role="tooltip"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
 <script src="app.js" defer></script>
 </body>
 </html>
